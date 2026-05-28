@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тест Скорости Печати — Автор Гульков Илья</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌨️</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ====== SCREEN 1: MAIN MENU ====== -->
+  <div id="menuScreen" class="screen active">
+    <div class="parallax-bg" id="parallaxBg"></div>
+    <div class="particles" id="particles"></div>
+    <div class="menu-content">
+      <span class="logo">⌨️</span>
+      <h1>Тест Скорости Печати</h1>
+      <p class="subtitle">Автор Гульков Илья</p>
+      <div class="menu-buttons">
+        <button class="menu-btn primary" id="startBtn">Начать тест</button>
+      </div>
+      <div class="menu-settings">
+        <select id="difficulty">
+          <option value="all">Любая сложность</option>
+          <option value="easy">Лёгкая</option>
+          <option value="medium">Средняя</option>
+          <option value="hard">Сложная</option>
+        </select>
+        <select id="category">
+          <option value="all">Все категории</option>
+          <option value="classic">Классика</option>
+          <option value="modern">Современное</option>
+          <option value="science">Наука</option>
+          <option value="tech">Технологии</option>
+          <option value="prose">Проза</option>
+        </select>
+        <button class="settings-btn" id="settingsBtn">⚙️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SCREEN 2: GAME ====== -->
+  <div id="gameScreen" class="screen">
+    <div class="game-header">
+      <button class="back-btn" id="backToMenu">← Назад</button>
+      <div class="game-stats">
+        <div class="stat-item">
+          <div class="timer-ring-wrap">
+            <span class="mode-label" id="modeLabel">⏱</span>
+            <svg viewBox="0 0 36 36" width="56" height="56">
+              <circle class="timer-ring-bg" cx="18" cy="18" r="15.5"/>
+              <circle class="timer-ring-fill" id="timerRing" cx="18" cy="18" r="15.5"
+                stroke-dasharray="97.4" stroke-dashoffset="0"/>
+            </svg>
+            <span class="timer-ring-text" id="timerDisplay">0:00</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value wpm" id="wpmDisplay">0</div>
+          <div class="stat-label">знаков/мин</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value acc" id="accuracyDisplay">100%</div>
+          <div class="stat-label">точность</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-bar">
+      <div class="fill" id="progressFill"></div>
+    </div>
+
+    <div class="text-info">
+      <span id="textSource"></span>
+      <span class="category-badge" id="textCategory"></span>
+    </div>
+
+    <div class="text-container" id="textContainer">
+      <div class="text-display" id="textDisplay"></div>
+      <textarea class="hidden-input" id="hiddenInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+    </div>
+
+    <div class="game-footer">
+      <button class="game-btn primary" id="restartBtn">Новый текст</button>
+    </div>
+  </div>
+
+  <!-- ====== RESULTS OVERLAY ====== -->
+  <div class="results-overlay" id="resultsOverlay">
+      <div class="results-card">
+        <button id="closeResults" class="results-close">✕</button>
+        <h2>Результаты</h2>
+      <div class="results-grid">
+        <div class="result-item highlight">
+          <div class="rvalue" id="resultWpm">0</div>
+          <div class="rlabel">Знаков в минуту</div>
+        </div>
+        <div class="result-item">
+          <div class="rvalue" id="resultAccuracy">0%</div>
+          <div class="rlabel">Точность</div>
+        </div>
+        <div class="result-item">
+          <div class="rvalue" id="resultRaw">0</div>
+          <div class="rlabel">Сырых знаков</div>
+        </div>
+        <div class="result-item">
+          <div class="rvalue" id="resultChars">0/0</div>
+          <div class="rlabel">Верно / Всего</div>
+        </div>
+        <div class="result-item">
+          <div class="rvalue" id="resultTime">0с</div>
+          <div class="rlabel">Время</div>
+        </div>
+        <div class="result-item">
+          <div class="rvalue" id="resultErrors">0</div>
+          <div class="rlabel">Ошибок</div>
+        </div>
+      </div>
+      <div class="results-actions">
+        <button class="primary" id="resultRestart">Ещё раз</button>
+        <button id="resultNewText">В меню</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SETTINGS OVERLAY ====== -->
+  <div class="results-overlay" id="settingsOverlay">
+    <div class="results-card settings-card">
+      <button id="closeSettings" class="results-close">✕</button>
+      <h2>Настройки</h2>
+      <div class="settings-list">
+        <div class="setting-row">
+          <span class="setting-label">Режим</span>
+          <div class="setting-options">
+            <label class="option-btn" id="modeText">
+              <input type="radio" name="mode" value="text" checked hidden>
+              <span>На текст</span>
+            </label>
+            <label class="option-btn" id="modeTimed">
+              <input type="radio" name="mode" value="timed" hidden>
+              <span>1 минута</span>
+            </label>
+          </div>
+        </div>
+        <div class="setting-row">
+          <span class="setting-label">Тема</span>
+          <div class="setting-options">
+            <label class="option-btn" id="themeLight">
+              <input type="radio" name="theme" value="light" hidden>
+              <span>Светлая</span>
+            </label>
+            <label class="option-btn" id="themeDark">
+              <input type="radio" name="theme" value="dark" hidden>
+              <span>Тёмная</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Автор Гульков Илья
+  </footer>
+
+  <script src="js/texts.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
