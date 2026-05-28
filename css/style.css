@@ -810,6 +810,24 @@ footer {
   font-size: 12px;
 }
 
+/* ====== TEXT PICKER ====== */
+.text-picker-card { max-width: 600px; }
+.text-picker-list { max-height: 50vh; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.text-picker-item {
+  padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px;
+  cursor: pointer; transition: all 0.15s; text-align: left; background: var(--surface);
+}
+.text-picker-item:hover { border-color: var(--primary); }
+.text-picker-item.selected { border-color: var(--primary); background: rgba(108,92,231,0.08); }
+.text-picker-item-source { font-weight: 600; font-size: 14px; }
+.text-picker-item-meta { font-size: 11px; color: var(--text2); margin-top: 2px; }
+.text-picker-item-preview { font-size: 13px; color: var(--text3); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.text-picker-empty { text-align: center; color: var(--text3); padding: 32px; font-size: 14px; }
+.text-picker-selected-badge {
+  display: inline-block; background: var(--primary); color: #fff; font-size: 11px;
+  padding: 2px 8px; border-radius: 8px; margin-left: 8px; vertical-align: middle;
+}
+
 /* ====== RESPONSIVE ====== */
 @media (max-width: 600px) {
   .menu-content h1 { font-size: 32px; }

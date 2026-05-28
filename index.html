@@ -83,6 +83,7 @@
 
     <div class="game-footer">
       <button class="game-btn primary" id="restartBtn">Новый текст</button>
+      <button class="game-btn secondary" id="pickTextBtn">Выбрать текст</button>
     </div>
   </div>
 
@@ -121,6 +122,15 @@
         <button class="primary" id="resultRestart">Ещё раз</button>
         <button id="resultNewText">В меню</button>
       </div>
+    </div>
+  </div>
+
+  <!-- ====== TEXT PICKER OVERLAY ====== -->
+  <div class="results-overlay" id="textPickerOverlay">
+    <div class="results-card text-picker-card">
+      <button id="closeTextPicker" class="results-close">✕</button>
+      <h2>Выбрать текст</h2>
+      <div class="text-picker-list" id="textPickerList"></div>
     </div>
   </div>
 

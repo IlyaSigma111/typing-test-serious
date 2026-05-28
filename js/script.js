@@ -81,6 +81,14 @@ function getTextPool() {
 let currentTextObj = null;
 
 function pickText() {
+  if (selectedTextObj) {
+    currentTextObj = selectedTextObj;
+    selectedTextObj = null;
+    textSource.textContent = currentTextObj.source;
+    const labels = {classic:'Классика',modern:'Современное',science:'Наука',tech:'Технологии',prose:'Проза'};
+    textCategory.textContent = labels[currentTextObj.category] || currentTextObj.category;
+    return currentTextObj.text;
+  }
   let pool = getTextPool();
   if (!pool.length) pool = NORMAL_TEXTS;
   currentTextObj = pool[Math.floor(Math.random() * pool.length)];
@@ -289,5 +297,45 @@ document.querySelectorAll('[name="mode"]').forEach(r => r.addEventListener('chan
 document.querySelectorAll('[name="theme"]').forEach(r => r.addEventListener('change', () => {
   if (r.checked) setTheme(r.value);
 }));
+
+// ====== TEXT PICKER ======
+const textPickerOverlay = document.getElementById('textPickerOverlay');
+const textPickerList = document.getElementById('textPickerList');
+const closeTextPicker = document.getElementById('closeTextPicker');
+const pickTextBtn = document.getElementById('pickTextBtn');
+
+let selectedTextObj = null;
+
+function openTextPicker() {
+  const pool = getTextPool();
+  textPickerList.innerHTML = '';
+  if (!pool.length) {
+    textPickerList.innerHTML = '<div class="text-picker-empty">Нет текстов под эти фильтры</div>';
+  } else {
+    pool.forEach(t => {
+      const item = document.createElement('div');
+      item.className = 'text-picker-item' + (selectedTextObj === t ? ' selected' : '');
+      const preview = t.text.length > 80 ? t.text.slice(0, 80) + '…' : t.text;
+      const diffLabels = {easy:'Лёгкая',medium:'Средняя',hard:'Сложная'};
+      const catLabels = {classic:'Классика',modern:'Современное',science:'Наука',tech:'Технологии',prose:'Проза'};
+      item.innerHTML = `
+        <div class="text-picker-item-source">${t.source}</div>
+        <div class="text-picker-item-meta">${catLabels[t.category]||t.category} · ${diffLabels[t.difficulty]||t.difficulty}</div>
+        <div class="text-picker-item-preview">${preview}</div>
+      `;
+      item.addEventListener('click', () => {
+        selectedTextObj = t;
+        textSource.innerHTML = t.source + ' <span class="text-picker-selected-badge">Выбран</span>';
+        textPickerOverlay.classList.remove('active');
+      });
+      textPickerList.appendChild(item);
+    });
+  }
+  textPickerOverlay.classList.add('active');
+}
+
+pickTextBtn.addEventListener('click', openTextPicker);
+closeTextPicker.addEventListener('click', () => textPickerOverlay.classList.remove('active'));
+textPickerOverlay.addEventListener('click', e => { if (e.target === textPickerOverlay) textPickerOverlay.classList.remove('active'); });
 
 showScreen(menuScreen);
